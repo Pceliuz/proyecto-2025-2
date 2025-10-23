@@ -20,7 +20,7 @@
 
         <br>
         <h1>
-            <a href="{{ route('comentarios.index') }}">Comentarios</a>
+            <a href="{{ route('comentarios.index') }}">Notas</a>
         </h1>
     </body>
 </html>
