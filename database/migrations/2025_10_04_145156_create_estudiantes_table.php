@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('nombres', length: 120);
             $table->string('pri_ape', length: 120);
             $table->string('seg_ape', length: 100);
-            $table->string('dni', length: 8)->unique()->nullable();
+            $table->string('dni', length: 10)->unique()->nullable();
+            $table->string('carrera', length: 100);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\View;
 use App\Models\{Comentario,Estudiante};
 
 use App\Http\Controllers\Estudiantes\EstudiantesController;
-use App\Http\Controllers\Comentarios\ComentariosController;
+use App\Http\Controllers\Notas\NotasController;
 
 
 Route::get('/', function () {
@@ -72,4 +72,5 @@ Route::get('/estudiantes/delete/{id}', [EstudiantesController::class, 'delete'])
 Route::post('/estudiantes/destroy/{estudiante}', [EstudiantesController::class, 'destroy'])->name('estudiantes.destroy');
 
 
-Route::get('/comentarios/index', [ComentariosController::class, 'index'])->name('comentarios.index');
+Route::get('/notas/index', [NotasController::class, 'index'])->name('notas.index');
+
