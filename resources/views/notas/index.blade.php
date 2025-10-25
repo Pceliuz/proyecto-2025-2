@@ -1,63 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notas</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestor de Notas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Fondo animado oscuro tipo olas RGB*/
+    body {
+      background: linear-gradient(-45deg, #0f172a, #1e1b4b, #3b0764, #450a0a);
+      background-size: 400% 400%;
+      animation: gradientShift 12s ease infinite;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 16px;
+      color: #f8fafc;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Brillo suave al pasar el cursor */
+    .hover-glow:hover {
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+      transform: translateY(-2px);
+    }
+  </style>
 </head>
+
 <body>
-    <h1 class="text-3xl font-bold underline">
-        Notas
+
+  <!-- Contenedor principal -->
+  <div class="bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl p-8 w-[95%] md:w-[90%] max-w-5xl border border-white/20 transition-all duration-300">
+
+    <!-- Título -->
+    <h1 class="text-4xl font-extrabold text-center mb-8 drop-shadow-lg">
+      📝 Registro de <span class="text-violet-400">Notas</span>
     </h1>
-    
-    <br>
 
-    {{-- Botón para volver al menu --}}
-    <div class="mb-4">
-        <a href="{{ url('/') }}" 
-            class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 border border-transparent rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
-            title="Volver al Menú"
-            role="button">
-            🔙Menú
-            </a>
+    <!-- Botón volver al menú -->
+    <div class="flex justify-end mb-6">
+      <a href="{{ url('/') }}" 
+         class="inline-flex items-center bg-gradient-to-r from-violet-600 to-indigo-500 hover:from-indigo-500 hover:to-violet-600 text-white font-semibold py-2 px-5 rounded-lg shadow-md transition duration-300 transform hover:-translate-y-1 hover-glow"
+         title="Volver al menú"
+         role="button">
+         🔙 Menú
+      </a>
     </div>
 
-    <div class="relative flex flex-col w-full h-full overflow-scroll text-gray-700 bg-white shadow-md rounded-xl bg-clip-border">
-        <table class="w-full text-left table-auto min-w-max">
-            <thead>
-                <tr>
-                    <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">Estudiante</th>
-                    <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">Curso</th>
-                    <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">Descripción</th>
-                    <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">Nota</th>
-                    <th class="p-4 border-b border-blue-gray-100 bg-blue-gray-50">Ver</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($notas as $nota)
-                    <tr class="hover:bg-blue-100">
-                        <td class="py-2 px-4 border-b border-gray-300">
-                            {{ $nota->estudiante->nombres }} {{ $nota->estudiante->apellidos }}
-                        </td>
-                        <td class="py-2 px-4 border-b border-gray-300">
-                            {{ $nota->curso }}
-                        </td>
-                        <td class="py-2 px-4 border-b border-gray-300">
-                            {{ $nota->descripcion }}
-                        </td>
-                        <td class="py-2 px-4 border-b border-gray-300">
-                            {{ $nota->nota }}
-                        </td>
-                        <td class="py-2 px-4 border-b border-gray-300">
-                            <a href="{{ route('notas.show', $nota->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                Ver
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <!-- Tabla -->
+    <div class="overflow-x-auto rounded-2xl shadow-lg bg-white/5 backdrop-blur-md p-4 border border-white/10">
+      <table class="min-w-full text-left text-gray-100">
+        <thead>
+          <tr class="bg-gradient-to-r from-indigo-700 to-violet-700 text-white uppercase text-sm">
+            <th class="p-4 rounded-tl-xl">Estudiante</th>
+            <th class="p-4">Curso</th>
+            <th class="p-4">Descripción</th>
+            <th class="p-4">Nota</th>
+            <th class="p-4 rounded-tr-xl">Ver</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach ($notas as $nota)
+            <tr class="hover:bg-white/10 transition duration-200">
+              <td class="py-3 px-4 border-b border-white/10">
+                {{ $nota->estudiante->nombres }} {{ $nota->estudiante->apellidos }}
+              </td>
+              <td class="py-3 px-4 border-b border-white/10">{{ $nota->curso }}</td>
+              <td class="py-3 px-4 border-b border-white/10">{{ $nota->descripcion }}</td>
+              <td class="py-3 px-4 border-b border-white/10 font-semibold text-violet-300">
+                {{ $nota->nota }}
+              </td>
+              <td class="py-3 px-4 border-b border-white/10 text-center">
+                <a href="{{ route('notas.show', $nota->id) }}" 
+                   class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-blue-600 hover:to-cyan-500 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 shadow-md hover-glow">
+                  Ver
+                </a>
+              </td>
+            </tr>
+          @endforeach
+        </tbody>
+      </table>
     </div>
+
+    <!-- Pie -->
+    <p class="text-center text-sm text-white/60 mt-6">
+      © {{ date('Y') }} Gestor de Notas — Registro Académico
+    </p>
+  </div>
+
 </body>
 </html>
