@@ -22,7 +22,6 @@
       margin: 0;
     }
 
-    /* Fondo animado tipo olas RGB oscuro */
     body {
       background: linear-gradient(-45deg, #0f172a, #1e1b4b, #3b0764, #450a0a);
       background-size: 400% 400%;
@@ -50,7 +49,7 @@
       backdrop-filter: blur(18px);
     }
 
-    /* Tarjeta izquierda: info/logo */
+    /* Tarjeta izquierda */
     .brand-card {
       background: var(--card);
       border-radius: var(--radius);
@@ -71,6 +70,7 @@
       align-items: center;
       gap: 14px;
     }
+
     .logo svg {
       width: 56px;
       height: 56px;
@@ -81,6 +81,7 @@
       font-weight: 700;
       color: var(--accent);
     }
+
     .brand-sub {
       color: var(--muted);
       font-size: 14px;
@@ -98,7 +99,14 @@
       margin-top: auto;
     }
 
-    /* Tarjeta derecha: formulario */
+    /* Columna derecha: formularios */
+    .right-column {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 30px;
+    }
+
     .form-card {
       background: var(--card);
       border-radius: var(--radius);
@@ -163,23 +171,10 @@
       transition: all 0.2s ease;
       margin-top: 10px;
     }
+
     .btn:hover {
       transform: scale(1.03);
       box-shadow: 0 6px 18px rgba(139, 92, 246, 0.4);
-    }
-
-    .create-link {
-      display: inline-block;
-      margin-top: 10px;
-      color: var(--accent);
-      font-weight: 600;
-      text-decoration: none;
-      text-align: center;
-      transition: color 0.2s ease;
-    }
-    .create-link:hover {
-      color: var(--accent2);
-      text-decoration: underline;
     }
 
     .error {
@@ -197,7 +192,7 @@
         order: 2;
         text-align: center;
       }
-      .form-card {
+      .right-column {
         order: 1;
       }
     }
@@ -206,8 +201,8 @@
 
 <body>
   <main class="container" role="main">
-    <!-- LEFT(izquierda): Información -->
-    <section class="brand-card" aria-hidden="false">
+    <!-- IZQUIERDA -->
+    <section class="brand-card">
       <div class="logo">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -236,47 +231,61 @@
       </p>
     </section>
 
-    <!-- RIGHT(derecha): Formulario -->
-    <section class="form-card" aria-labelledby="login-heading">
-      <h1 id="login-heading">Iniciar sesión</h1>
+    <!-- DERECHA (dos formularios apilados) -->
+    <div class="right-column">
+      
+      <!-- Formulario Docente -->
+      <section class="form-card" aria-labelledby="login-docente">
+        <h1 id="login-docente">Iniciar sesión | Docente</h1>
 
-      @if(session('status'))
-        <div style="color:var(--accent);margin-bottom:10px">{{ session('status') }}</div>
-      @endif
+        <form method="POST" action="{{ route('login') }}" novalidate>
+          @csrf
+          <div>
+            <label for="email_docente">Correo electrónico</label>
+            <input id="email_docente" name="email" type="email" class="input"
+                   placeholder="Correo electrónico" required autocomplete="email">
+          </div>
 
-      <form method="POST" action="{{ route('login') }}" novalidate>
-        @csrf
+          <div>
+            <label for="password_docente">Contraseña</label>
+            <input id="password_docente" name="password" type="password" class="input"
+                   placeholder="••••••••" required autocomplete="current-password">
+          </div>
 
-        <div>
-          <label for="email">Correo electrónico</label>
-          <input id="email" name="email" type="email"
-                 class="input" value="{{ old('email') }}" required autofocus autocomplete="email"
-                 placeholder="profesor@correo.com">
-          @error('username')
-            <div class="error">{{ $message }}</div>
-          @enderror
-        </div>
+          <div class="row">
+            <label><input type="checkbox" name="remember"> Recordarme</label>
+          </div>
 
-        <div>
-          <label for="password">Contraseña</label>
-          <input id="password" name="password" type="password"
-                 class="input" required autocomplete="current-password"
-                 placeholder="••••••••">
-          @error('password')
-            <div class="error">{{ $message }}</div>
-          @enderror
-        </div>
+          <button type="submit" class="btn">Iniciar sesión</button>
+        </form>
+      </section>
 
-        <div class="row">
-          <label>
-            <input type="checkbox" name="remember" style="transform:scale(1.1); margin-right:6px;">
-            Recordarme
-          </label>
-        </div>
+      <!-- Formulario Estudiante -->
+      <section class="form-card" aria-labelledby="login-estudiante">
+        <h1 id="login-estudiante">Iniciar sesión | Estudiante</h1>
 
-        <button type="submit" class="btn">Iniciar sesión</button>
-      </form>
-    </section>
+        <form method="POST" action="{{ route('login') }}" novalidate>
+          @csrf
+          <div>
+            <label for="email_estudiante">Correo electrónico</label>
+            <input id="email_estudiante" name="email" type="email" class="input"
+                   placeholder="Correo electrónico" required autocomplete="email">
+          </div>
+
+          <div>
+            <label for="password_estudiante">Contraseña</label>
+            <input id="password_estudiante" name="password" type="password" class="input"
+                   placeholder="••••••••" required autocomplete="current-password">
+          </div>
+
+          <div class="row">
+            <label><input type="checkbox" name="remember"> Recordarme</label>
+          </div>
+
+          <button type="submit" class="btn">Iniciar sesión</button>
+        </form>
+      </section>
+    </div>
   </main>
 </body>
 </html>
